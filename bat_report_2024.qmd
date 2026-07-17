@@ -47,6 +47,11 @@ load("coe-bats.RData")
 #save.image("coe-bats.RData")
 ```
 
+![Bat in an urban environment. Photo: U.S. Fish and Wildlife Service.](usfws_bat.jpg){width=100%}
+
+## Executive Summary
+SENSR (Services for Environmental Sensor Research; [sensr.ca](sensr.ca)), a unit of Biodiversity Pathways ([biodiversitypathways.ca](biodiversitypathways.ca)), helps researchers and organizations obtain greater value from environmental sensor data. For this project, SENSR worked with Dr. Erin Bayne from the Department of Biological Sciences at the University of Alberta to compile, process, and report on acoustic bat-monitoring data previously collected in Edmonton. This report summarizes the monitoring effort and provides an overview of bat species detections and patterns of bat activity across the study area.
+
 ::: {layout-ncol=2}
 
 ![](<SENSR_Logo_Left_Tagline_Full Colour.png>){width=70% fig-align="center"}
@@ -54,8 +59,6 @@ load("coe-bats.RData")
 ![](BP-Logo-Hz-invert-notag.png){width=70% fig-align="center"}
 
 :::
-## Executive Summary
-SENSR (Services for Environmental Sensor Research; [sensr.ca](sensr.ca)), a unit of Biodiversity Pathways ([biodiversitypathways.ca](biodiversitypathways.ca)), helps researchers and organizations obtain greater value from environmental sensor data. For this project, SENSR worked with Dr. Erin Bayne from the Department of Biological Sciences at the University of Alberta to compile, process, and report on acoustic bat-monitoring data previously collected in Edmonton. This report summarizes the monitoring effort and provides an overview of bat species detections and patterns of bat activity across the study area.
 
 ## Land Acknowledgement
 
