@@ -1,5 +1,5 @@
 ---
-title: "City of Edmonton Bat Monitoring"
+title: "City of Edmonton Bat Monitoring 2024"
 format:
   html:
     grid:
@@ -13,11 +13,11 @@ theme: cosmo
 page-layout: article
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: 
-  - name: "Martin Hinojosa Reyes"
+  - name: "Martin Hinojosa"
     affiliation:
       - "Biodiversity Pathways Ltd."
   - name: "Cami Hurtado"
-    affiiliation:
+    affiliation:
       - "Biodiversity Pathways Ltd."
 editor: visual
 nocite: '@*'
@@ -47,8 +47,14 @@ load("coe-bats.RData")
 #save.image("coe-bats.RData")
 ```
 
-## Executive Summary
+::: {layout-ncol=2}
 
+![](<SENSR_Logo_Left_Tagline_Full Colour.png>){width=70% fig-align="center"}
+
+![](BP-Logo-Hz-invert-notag.png){width=70% fig-align="center"}
+
+:::
+## Executive Summary
 SENSR (Services for Environmental Sensor Research; [sensr.ca](sensr.ca)), a unit of Biodiversity Pathways ([biodiversitypathways.ca](biodiversitypathways.ca)), helps researchers and organizations obtain greater value from environmental sensor data. For this project, SENSR worked with Dr. Erin Bayne from the Department of Biological Sciences at the University of Alberta to compile, process, and report on acoustic bat-monitoring data previously collected in Edmonton. This report summarizes the monitoring effort and provides an overview of bat species detections and patterns of bat activity across the study area.
 
 ## Land Acknowledgement
@@ -280,7 +286,7 @@ site_results_sf <- site_status_sf %>%
 
 ```
 
-In 2024, 35 acoustic recording units were deployed between July 15 and August 26 across the City of Edmonton and surrounding areas. Deployments followed the standards set by NABat and the North by Northwest Bat Hub (Reichert et al. 2018).
+In 2024, 35 acoustic recording units were deployed between July 15 and August 26 across the City of Edmonton and surrounding areas. Deployments followed the standards set by NABat and the North by Northwest Bat Hub (@reichert2018guide).
 
 ### Data Processing
 
