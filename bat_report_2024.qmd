@@ -1043,9 +1043,8 @@ p_sites
 
 Species differed in their activity patterns through the night. Little brown bat and big brown bat showed pronounced peaks at approximately 22:00. Eastern red bat activity was highest between 22:00 and midnight, whereas hoary bat activity peaked later, at approximately 02:00. Silver-haired bat activity remained relatively high from midnight until approximately 04:00. Activity patterns for less frequently detected species were more variable because of the smaller number of detections (Figure 3).
 
-```{r}
-#| label: fig-night-species
-#| fig-cap: "Hourly bat activity patterns by species between 20:00 and 06:00. Each panel shows the number of detections recorded by hour for each species."
+```{#| label: fig-night-species}
+#| fig-cap: "Mean hourly bat activity by species between 20:00 and 06:00. Values represent the average number of detections per site-night."
 #| fig-width: 10
 #| fig-height: 7
 #| code-summary: "Show hourly activity code"
@@ -1061,12 +1060,16 @@ night_hour_key <- tibble(
   )
 )
 
+sampled_site_nights <- bat_site %>%
+  distinct(location, night)
+
 species_hour_grid <- crossing(
   species_clean = bat_site %>%
     filter(species_confidence == "Species-level ID") %>%
     distinct(species_clean) %>%
     pull(species_clean),
-  hour = night_hour_key$hour
+  hour = night_hour_key$hour,
+  sampled_site_nights
 )
 
 hourly_species <- bat_site %>%
@@ -1075,16 +1078,23 @@ hourly_species <- bat_site %>%
     hour %in% night_hour_key$hour
   ) %>%
   count(
+    location,
+    night,
     species_clean,
     hour,
     name = "n"
   ) %>%
   right_join(
     species_hour_grid,
-    by = c("species_clean", "hour")
+    by = c("location", "night", "species_clean", "hour")
   ) %>%
   mutate(
     n = replace_na(n, 0L)
+  ) %>%
+  group_by(species_clean, hour) %>%
+  summarise(
+    mean_detections = mean(n),
+    .groups = "drop"
   ) %>%
   left_join(
     night_hour_key,
@@ -1099,7 +1109,7 @@ p_hourly_species <- ggplot(
   hourly_species,
   aes(
     x = hour_plot,
-    y = n
+    y = mean_detections
   )
 ) +
   geom_line(linewidth = 0.8) +
@@ -1115,7 +1125,7 @@ p_hourly_species <- ggplot(
   scale_y_continuous(labels = comma) +
   labs(
     x = "Hour of night",
-    y = "Number of detections"
+    y = "Mean detections per site-night"
   ) +
   theme_bw() +
   theme(

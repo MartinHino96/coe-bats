@@ -408,20 +408,96 @@ Figure&nbsp;2: Nightly variation in bat detections among the 15 monitoring sites
 </div>
 </div>
 <p>Species differed in their activity patterns through the night. Little brown bat and big brown bat showed pronounced peaks at approximately 22:00. Eastern red bat activity was highest between 22:00 and midnight, whereas hoary bat activity peaked later, at approximately 02:00. Silver-haired bat activity remained relatively high from midnight until approximately 04:00. Activity patterns for less frequently detected species were more variable because of the smaller number of detections (Figure 3).</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="fig-night-species" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-night-species-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="bat_report_2024_files/figure-html/fig-night-species-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;3: Hourly bat activity patterns by species between 20:00 and 06:00. Each panel shows the number of detections recorded by hour for each species."><img src="bat_report_2024_files/figure-html/fig-night-species-1.png" class="img-fluid figure-img" width="960"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-night-species-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Hourly bat activity patterns by species between 20:00 and 06:00. Each panel shows the number of detections recorded by hour for each species.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
+<pre class="{#| label: fig-night-species}"><code>#| fig-cap: "Mean hourly bat activity by species between 20:00 and 06:00. Values represent the average number of detections per site-night."
+#| fig-width: 10
+#| fig-height: 7
+#| code-summary: "Show hourly activity code"
+#| echo: false
+
+night_hour_key &lt;- tibble(
+  hour = c(20:23, 0:6),
+  hour_plot = 20:30,
+  hour_label = c(
+    "20:00", "21:00", "22:00", "23:00",
+    "00:00", "01:00", "02:00", "03:00",
+    "04:00", "05:00", "06:00"
+  )
+)
+
+sampled_site_nights &lt;- bat_site %&gt;%
+  distinct(location, night)
+
+species_hour_grid &lt;- crossing(
+  species_clean = bat_site %&gt;%
+    filter(species_confidence == "Species-level ID") %&gt;%
+    distinct(species_clean) %&gt;%
+    pull(species_clean),
+  hour = night_hour_key$hour,
+  sampled_site_nights
+)
+
+hourly_species &lt;- bat_site %&gt;%
+  filter(
+    species_confidence == "Species-level ID",
+    hour %in% night_hour_key$hour
+  ) %&gt;%
+  count(
+    location,
+    night,
+    species_clean,
+    hour,
+    name = "n"
+  ) %&gt;%
+  right_join(
+    species_hour_grid,
+    by = c("location", "night", "species_clean", "hour")
+  ) %&gt;%
+  mutate(
+    n = replace_na(n, 0L)
+  ) %&gt;%
+  group_by(species_clean, hour) %&gt;%
+  summarise(
+    mean_detections = mean(n),
+    .groups = "drop"
+  ) %&gt;%
+  left_join(
+    night_hour_key,
+    by = "hour"
+  ) %&gt;%
+  arrange(
+    species_clean,
+    hour_plot
+  )
+
+p_hourly_species &lt;- ggplot(
+  hourly_species,
+  aes(
+    x = hour_plot,
+    y = mean_detections
+  )
+) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 1.8) +
+  facet_wrap(
+    ~species_clean,
+    scales = "free_y"
+  ) +
+  scale_x_continuous(
+    breaks = night_hour_key$hour_plot,
+    labels = night_hour_key$hour_label
+  ) +
+  scale_y_continuous(labels = comma) +
+  labs(
+    x = "Hour of night",
+    y = "Mean detections per site-night"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+p_hourly_species</code></pre>
 </section>
 <section id="concluding-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
